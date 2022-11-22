@@ -204,6 +204,7 @@ resource "aws_s3_bucket" "AHA-S3Bucket-PrimaryRegion" {
 }
 
 resource "aws_s3_bucket_acl" "AHA-S3Bucket-PrimaryRegion" {
+    count      = "${var.ExcludeAccountIDs != "" ? 1 : 0}"
     bucket = aws_s3_bucket.AHA-S3Bucket-PrimaryRegion[0].id
     acl    = "private"
 }
@@ -426,12 +427,12 @@ resource "aws_secretsmanager_secret" "AssumeRoleArn" {
         "AssumeRoleArn" = ""
         "Name"          = "AHA-AssumeRoleArn"
     }
-    dynamic "replica" {
-      for_each = var.aha_secondary_region == "" ? [0] : [1]
-      content {
-        region = var.aha_secondary_region
-      }
-    }
+    # dynamic "replica" {
+    #   for_each = var.aha_secondary_region == "" ? [0] : [1]
+    #   content {
+    #     region = var.aha_secondary_region
+    #   }
+    # }
 }
 resource "aws_secretsmanager_secret_version" "AssumeRoleArn" {
     count = "${var.ManagementAccountRoleArn == "" ? 0 : 1}"
