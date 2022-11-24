@@ -27,7 +27,7 @@ provider "aws" {
 
 # Comment below - if needed to use s3_bucket, s3_key for consistency with cf 
 locals {
-    source_files = ["../../handler.py", "../../messagegenerator.py"]
+    source_files = ["../../aha-2.1-beta/handler.py", "../../aha-2.1-beta/messagegenerator.py"]
 }
 data "template_file" "t_file" {
     count = "${length(local.source_files)}"
